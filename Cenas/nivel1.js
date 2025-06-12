@@ -67,7 +67,9 @@ class Nivel1 extends Phaser.Scene {
 
     create() {
         // Background
-        this.add.image(800, 400, 'background').setScale(1.3);
+        this.background = this.add.tileSprite(0, 0, 2000, 800, 'background')
+        .setOrigin(0)
+        .setDepth(0);
         this.add.image(1400, 160, 'sol').setScale(0.6);
 
         // Nuvens
@@ -167,6 +169,24 @@ class Nivel1 extends Phaser.Scene {
         // Responsive resize
         window.addEventListener('resize', () => this.resizeGame());
         this.resizeGame();
+
+        //Botão de voltar
+        const btnVoltar = this.add.text(1850, 40, 'Voltar', {
+        fontSize: '32px',
+        fill: '#fff',
+        backgroundColor: '#000',
+        padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        })
+        .setInteractive({ useHandCursor: true })
+        .setDepth(10)
+        .on('pointerover', () => btnVoltar.setStyle({ fill: '#f1c40f' }))
+        .on('pointerout', () => btnVoltar.setStyle({ fill: '#fff' }))
+        .on('pointerdown', () => {
+        this.scene.stop(); 
+        this.scene.stop('Nivel1');
+        this.scene.start('LevelMenuScene');
+        });
+
     }
 
     update() {
