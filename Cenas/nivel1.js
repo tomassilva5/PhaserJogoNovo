@@ -46,7 +46,7 @@ class Nivel1 extends Phaser.Scene {
         this.load.image('background', 'Assets/background.png');
         this.load.image('ground', 'Assets/ground.png');
         this.load.image('sol', 'Assets/sol.png');
-        this.load.image('cloud', 'Assets/cloud.png');
+        this.load.image('nuvem', 'Assets/nuvem.png');
         this.load.image('stone', 'Assets/stone.png');
         this.load.image('bambu', 'Assets/bambu.png');
         this.load.image('pass', 'Assets/pass.png');
@@ -70,13 +70,14 @@ class Nivel1 extends Phaser.Scene {
         this.add.image(800, 400, 'background').setScale(1.3);
         this.add.image(1400, 160, 'sol').setScale(0.6);
 
-        // Clouds
-        const cloudPos = [
+        // Nuvens
+        const nuvemPos = [
             [0, 80], [200, 140], [300, 100], [550, 180],
-            [780, 120], [900, 140], [1150, 200], [1660, 190],
-            [1600, 60], [1950, 120]
+            [780, 120], [900, 140], [1150, 200], [1800, 80]
         ];
-        cloudPos.forEach(([x, y]) => this.add.image(x, y, 'cloud'));
+        nuvemPos.forEach(([x, y]) =>
+        this.add.image(x, y, 'nuvem').setScale(0.6)
+        );
 
         // Player
         this.player = this.physics.add.sprite(50, 640, 'pandapx');
