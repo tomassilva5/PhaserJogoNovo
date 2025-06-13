@@ -286,12 +286,15 @@ class Nivel1 extends Phaser.Scene {
     }
 
     win() {
-        this.physics.pause();
-        this.player.setTint(0x008000);
-        this.player.anims.play('turn');
-        this.gameOver = true;
-        // Troca para o próximo nível
-        this.scene.start('Nivel2');
+    this.physics.pause();
+    this.player.setTint(0x008000);
+    this.player.anims.play('turn');
+    this.gameOver = true;
+
+    // Ir para o menu de níveis
+    this.time.delayedCall(1000, () => {
+        this.scene.start('LevelMenuScene');
+    });
     }
 
     replay() {
