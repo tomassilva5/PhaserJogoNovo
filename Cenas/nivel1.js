@@ -70,12 +70,12 @@ class Nivel1 extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, 2000, 800, 'background')
         .setOrigin(0)
         .setDepth(0);
-        this.add.image(1400, 160, 'sol').setScale(0.6);
+        this.add.image(1450, 160, 'sol').setScale(0.6);
 
         // Nuvens
         const nuvemPos = [
-            [0, 80], [200, 140], [300, 100], [550, 180],
-            [780, 120], [900, 140], [1150, 200], [1800, 80]
+            [0, 80], [300, 100], [580, 160],
+            [880, 100], [1150, 200], [1800, 80]
         ];
         nuvemPos.forEach(([x, y]) =>
         this.add.image(x, y, 'nuvem').setScale(0.6)
@@ -113,11 +113,11 @@ class Nivel1 extends Phaser.Scene {
         this.stones.create(300, 693, 'stone');
 
         // Bambu (reduzido)
-        this.bamboos.create(300, 550, 'bambu').setScale(0.3).refreshBody();
-        this.bamboos.create(600, 500, 'bambu').setScale(0.3).refreshBody();
-        this.bamboos.create(1200, 640, 'bambu').setScale(0.3).refreshBody();
-        this.bamboos.create(1700, 500, 'bambu').setScale(0.3).refreshBody();
-        this.bamboos.create(1200, 400, 'bambu').setScale(0.3).refreshBody();
+        this.bamboos.create(300, 550, 'bambu').setScale(0.25).refreshBody();
+        this.bamboos.create(600, 500, 'bambu').setScale(0.25).refreshBody();
+        this.bamboos.create(1200, 640, 'bambu').setScale(0.25).refreshBody();
+        this.bamboos.create(1700, 500, 'bambu').setScale(0.25).refreshBody();
+        this.bamboos.create(1200, 400, 'bambu').setScale(0.25).refreshBody();
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -242,10 +242,10 @@ class Nivel1 extends Phaser.Scene {
     showkey(player, groundsm) {
         this.keys.create(580, 250, 'pass');
         this.platforms.create(2328, 760, 'ground');
-        this.lavas2.create(220, 790, 'lava2').setScale(1.5).refreshBody();
-        this.lavas2.create(800, 790, 'lava2').setScale(1.5).refreshBody();
-        this.lavas2.create(1172, 790, 'lava2').setScale(1.5).refreshBody();
-        this.platformsm3.create(830, 430, 'groundsm').setScale(0.3).refreshBody();
+        this.lavas2.create(230, 800, 'lava2').setScale(1.0).refreshBody();
+        this.lavas2.create(810, 800, 'lava2').setScale(1.0).refreshBody();
+        this.lavas2.create(1184, 800, 'lava2').setScale(1.0).refreshBody();
+        this.platformsm3.create(829, 430, 'groundsm').setScale(0.3).refreshBody();
         this.physics.world.colliders.remove(
             this.physics.world.colliders.getActive().find(i => i.name === 'plat')
         );

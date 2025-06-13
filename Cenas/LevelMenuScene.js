@@ -20,15 +20,14 @@ class LevelMenuScene extends Phaser.Scene {
 
     // Botão Nível 1
     this.createButton(1000, 300, 'Nível 1', () => {
-      this.scene.stop('Nivel1'); 
       this.scene.start('Nivel1');
     });
 
     // Botão Nível 2
     this.createButton(1000, 400, 'Nível 2', () => {
-      this.scene.stop('Nivel2');
       this.scene.start('Nivel2');
     });
+
 
     // Botão Voltar
     this.createButton(1000, 500, 'Voltar', () => {
@@ -51,3 +50,4 @@ class LevelMenuScene extends Phaser.Scene {
       .on('pointerdown', callback);
   }
 }
+window.LevelMenuScene = LevelMenuScene;

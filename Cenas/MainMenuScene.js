@@ -38,5 +38,6 @@ class MainMenuScene extends Phaser.Scene {
     definicoes.on('pointerdown', () => {
       this.scene.start('DefinicoesScene');
     });
+    window.MainMenuScene = MainMenuScene;
   }
 }
