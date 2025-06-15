@@ -123,7 +123,13 @@ class Nivel1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         // Score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '36px', fill: '#000' });
+        this.scoreText = this.add.text(16, 16, 'score: 0', {
+            fontSize: '36px',
+            fill: '#000',
+            fontStyle: 'bold',
+            fontFamily: 'Arial'
+        });
+
 
         // Animations
         this.anims.create({

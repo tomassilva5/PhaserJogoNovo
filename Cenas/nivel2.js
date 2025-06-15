@@ -44,38 +44,34 @@ class Nivel2 extends Phaser.Scene {
             percentText.destroy();
         });
 
-        // Assets do nível 2
-        this.load.image('back', 'Assets/back2.jpeg');
-        this.load.image('watwave2', 'Assets/watwave.png');
-        this.load.image('cloud', 'Assets/cloud2.png');
+        // Assets do nível 2 
+        this.load.image('back', 'Assets/background.png');
+        this.load.image('watwave2', 'Assets/lava2.png');
+        this.load.image('cloud', 'Assets/nuvem.png');
         this.load.image('ground', 'Assets/ground.png');
         this.load.image('groundsm', 'Assets/groundsm.png');
-        this.load.image('win2', 'Assets/win2.png');
+        this.load.image('win2', 'Assets/win.png');
         this.load.image('bambu', 'Assets/bambu.png');
-        this.load.image('pass2', 'Assets/key2.png');
-        this.load.image('button2', 'Assets/button2.png');
-        this.load.image('doorc2', 'Assets/doorc2.png');
-        this.load.image('dooro2', 'Assets/dooro2.png');
-        this.load.image('rain2', 'Assets/rain2.png');
-        this.load.image('gameover2', 'Assets/gameover2.png');
-        this.load.spritesheet('pandapx2', 'Assets/pandapx2.png', { frameWidth: 70, frameHeight: 100 });
+        this.load.image('pass2', 'Assets/pass.png');
+        //this.load.image('button2', 'Assets/startBtn.png'); 
+        this.load.image('doorc2', 'Assets/doorc.png');
+        this.load.image('dooro2', 'Assets/dooro.png');
+        this.load.image('gameover2', 'Assets/gameover.png');
+        this.load.spritesheet('pandapx2', 'Assets/pandapx.png', { frameWidth: 70, frameHeight: 100 });
         this.load.spritesheet('startBtn', 'Assets/startBtn.png', { frameWidth: 60, frameHeight: 60 });
         this.load.audio('jump', 'Assets/jump4.mp3');
         this.load.audio('collect', 'Assets/collect.mp3');
         this.load.audio('gameov', 'Assets/gameov.mp3');
-        this.load.audio('buttsound', 'Assets/buttsound.mp3');
         this.load.audio('gateop', 'Assets/gateop.mp3');
+
     }
 
     create() {
         // Fundo azul
-        this.add.image(1000, 400, 'back');
+        this.add.image(0, 0, 'back')
+        .setOrigin(0, 0)
+        .setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
-        // Efeito de chuva
-        this.add.image(100, 460, 'rain2');
-        this.add.image(800, 480, 'rain2');        
-        this.add.image(1540, 480, 'rain2');
-        this.add.image(2000, 450, 'rain2');
 
         // Nuvens
         this.add.image(50, 80, 'cloud');
@@ -99,11 +95,12 @@ class Nivel2 extends Phaser.Scene {
         this.smplatw = this.physics.add.staticGroup();
         this.smplatw.create(680, 430, 'groundsm').setScale(0.3).refreshBody();
 
-        // Maçãs (comida)
+        // Bambu
         this.food = this.physics.add.staticGroup();
-        this.food.create(680, 480, 'bambu');
-        this.food.create(1280, 580, 'bambu');
-        this.food.create(1250, 70, 'bambu');
+        this.food.create(680, 480, 'bambu').setScale(0.25).refreshBody();
+        this.food.create(1280, 580, 'bambu').setScale(0.25).refreshBody();
+        this.food.create(1250, 70, 'bambu').setScale(0.25).refreshBody();
+
 
         // Grupos para lógica do jogo
         this.pass = this.physics.add.staticGroup();
@@ -139,17 +136,41 @@ class Nivel2 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         // Score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '36px', fill: '#fff' });
+        this.scoreText = this.add.text(16, 16, 'score: 0', {
+            fontSize: '36px',
+            fill: '#000',
+            fontStyle: 'bold',
+            fontFamily: 'Arial'
+        });
+
 
         // Colisões e overlaps
         this.physics.add.collider(this.ground, this.player);
         this.physics.add.collider(this.smplat, this.player);
         this.physics.add.collider(this.smplatw, this.player, this.death, null, this).name = 'platf';
         this.physics.add.collider(this.player, this.doorsc2).name = 'doorcr';
-        this.physics.add.collider(this.player, this.buttons, this.showall, null, this).name = 'butt';
         this.physics.add.overlap(this.player, this.food, this.collecta, null, this);
         this.physics.add.overlap(this.player, this.pass, this.last, null, this);
         this.physics.add.collider(this.player, this.doorso2, this.win, null, this);
+
+        // Botão Voltar para o menu de níveis
+        const btnVoltar = this.add.text(1850, 40, 'Voltar', {
+            fontSize: '32px',
+            fill: '#fff',
+            backgroundColor: '#000',
+            padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        })
+        .setInteractive({ useHandCursor: true })
+        .setDepth(10)
+        .on('pointerover', () => btnVoltar.setStyle({ fill: '#f1c40f' }))
+        .on('pointerout', () => btnVoltar.setStyle({ fill: '#fff' }))
+        .on('pointerdown', () => {
+            this.scene.stop(); 
+            this.scene.stop('Nivel1');
+            this.scene.start('LevelMenuScene');
+        });
+        
+
     }
 
     update() {
@@ -201,9 +222,6 @@ class Nivel2 extends Phaser.Scene {
             this.sound.play('gameov');
             this.add.image(940, 350, 'gameover2');
             this.add.text(700, 450, 'Collect all bambus first', { fontSize: '36px', fill: '#fff' });
-
-            this.startBtn = this.add.sprite(940, 550, 'startBtn').setInteractive();
-            this.startBtn.on('pointerdown', () => this.scene.restart());
         }
     }
 
@@ -222,13 +240,15 @@ class Nivel2 extends Phaser.Scene {
         this.smplat.create(920, 290, 'ground').setScale(0.3).refreshBody();
 
         this.pass.create(1600, 480, 'pass2');
-        this.buttons.create(60, 235, 'button2');
+        this.smplat.create(1600, 520, 'groundsm').setScale(0.3).refreshBody();
 
-        this.smplat.create(680, 430, 'groundm').setScale(0.3).refreshBody();
+        this.smplat.create(680, 430, 'groundsm').setScale(0.3).refreshBody();
 
         this.physics.world.colliders.remove(
             this.physics.world.colliders.getActive().find(i => i.name === 'platf')
         );
+
+        this.physics.add.collider(this.smplat, this.player);
     }
 
     drown() {
@@ -249,14 +269,10 @@ class Nivel2 extends Phaser.Scene {
         this.smplat.create(1800, 670, 'ground').setScale(0.3).refreshBody();
         this.smplat.create(2000, 670, 'ground').setScale(0.3).refreshBody();
 
-        this.smplat.create(1900, 250, 'ground').setScale(0.3).refreshBody();
+        this.smplat.create(1900, 250, 'ground').setScale(0.).refreshBody();
         this.smplat.create(1280, 530, 'ground').setScale(0.3).refreshBody();
 
         this.doorsc2.create(1920, 130, 'doorc2').setScale(1.5).refreshBody();
-
-        this.buttons2 = this.physics.add.staticGroup();
-        this.buttons2.create(60, 235, 'button2');
-        this.physics.add.collider(this.player, this.buttons2);
 
         this.physics.world.colliders.remove(
             this.physics.world.colliders.getActive().find(i => i.name === 'butt')
