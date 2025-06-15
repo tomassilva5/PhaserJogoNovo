@@ -123,7 +123,7 @@ class Nivel1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         // Score
-        this.scoreText = this.add.text(16, 16, 'score: 0', {
+        this.scoreText = this.add.text(16, 16, 'pontuação: 0', {
             fontSize: '36px',
             fill: '#000',
             fontStyle: 'bold',
@@ -218,7 +218,7 @@ class Nivel1 extends Phaser.Scene {
     collectfood(player, bambu) {
         bambu.disableBody(true, true);
         this.score += 10;
-        this.scoreText.setText('score: ' + this.score);
+        this.scoreText.setText('pontuação: ' + this.score);
         this.sound.play('collect');
     }
 
@@ -269,7 +269,7 @@ class Nivel1 extends Phaser.Scene {
     lavacreate(player, pass) {
         pass.disableBody(true, true);
         this.score += 20;
-        this.scoreText.setText('score:' + this.score);
+        this.scoreText.setText('pontuação: ' + this.score);
 
         if (this.score === 70) {
             this.sound.play('collect');
@@ -297,11 +297,14 @@ class Nivel1 extends Phaser.Scene {
     this.player.anims.play('turn');
     this.gameOver = true;
 
-    // Ir para o menu de níveis
-    this.time.delayedCall(1000, () => {
+    // Mostra a imagem de vitória (win.png) no centro do ecrã
+    this.add.image(1000, 400, 'win').setDepth(10);
+
+    // (Opcional) Após 1 segundo, vai para o menu de níveis
+    this.time.delayedCall(2000, () => {
         this.scene.start('LevelMenuScene');
     });
-    }
+}
 
     replay() {
         this.scene.restart();
