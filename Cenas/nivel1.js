@@ -176,21 +176,22 @@ class Nivel1 extends Phaser.Scene {
         window.addEventListener('resize', () => this.resizeGame());
         this.resizeGame();
 
-        //Botão de voltar
-        const btnVoltar = this.add.text(1850, 40, 'Voltar', {
+        const btnVoltar = this.add.text(30, 60, '⬅ VOLTAR', {
         fontSize: '32px',
-        fill: '#fff',
-        backgroundColor: '#000',
-        padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        fill: '#00ccff',
+        fontFamily: 'Arial',
+        fontStyle: 'bold',
+        backgroundColor: '#00000088',
+        padding: { left: 12, right: 12, top: 6, bottom: 6 }
         })
+        .setOrigin(0, 0) // canto superior ESQUERDO
         .setInteractive({ useHandCursor: true })
+        .setScrollFactor(0) // Fixa na tela, mesmo com câmera a seguir
         .setDepth(10)
-        .on('pointerover', () => btnVoltar.setStyle({ fill: '#f1c40f' }))
-        .on('pointerout', () => btnVoltar.setStyle({ fill: '#fff' }))
+        .on('pointerover', () => btnVoltar.setColor('#ffffff'))
+        .on('pointerout', () => btnVoltar.setColor('#00ccff'))
         .on('pointerdown', () => {
-        this.scene.stop(); 
-        this.scene.stop('Nivel1');
-        this.scene.start('LevelMenuScene');
+            this.scene.start('LevelMenuScene');
         });
 
     }

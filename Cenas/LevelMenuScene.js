@@ -8,46 +8,57 @@ class LevelMenuScene extends Phaser.Scene {
   }
 
   create() {
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
+
     this.add.image(0, 0, 'menuBackground')
       .setOrigin(0)
-      .setDisplaySize(2000, 800);
+      .setDisplaySize(width, height);
 
-    this.add.text(1000, 150, 'Seleciona o Nível', {
-      fontSize: '48px',
+    // TÍTULO
+    this.add.text(width / 2, 150, 'SELECIONA O NÍVEL', {
+      fontSize: '56px',
       fill: '#ffffff',
-      fontFamily: 'Arial'
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 6,
+      shadow: {
+        offsetX: 4,
+        offsetY: 4,
+        color: '#000',
+        blur: 4,
+        fill: true
+      }
     }).setOrigin(0.5);
 
-    // Botão Nível 1
-    this.createButton(1000, 300, 'Nível 1', () => {
+    // Botões de nível
+    this.createStyledButton(width / 2, 300, 'NÍVEL 1', () => {
       this.scene.start('Nivel1');
     });
 
-    // Botão Nível 2
-    this.createButton(1000, 400, 'Nível 2', () => {
+    this.createStyledButton(width / 2, 400, 'NÍVEL 2', () => {
       this.scene.start('Nivel2');
     });
 
-
     // Botão Voltar
-    this.createButton(1000, 500, 'Voltar', () => {
-      this.scene.start('MainMenuScene'); 
+    this.createStyledButton(width / 2, 500, '⬅ VOLTAR', () => {
+      this.scene.start('MainMenuScene');
     });
   }
 
-  createButton(x, y, text, callback) {
-    const btn = this.add.text(x, y, text, {
-      fontSize: '32px',
-      fill: '#fff',
-      backgroundColor: '#444',
-      fontFamily: 'Arial'
-    })
-      .setOrigin(0.5)
-      .setPadding(10)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerover', () => btn.setStyle({ fill: '#f1c40f' }))
-      .on('pointerout', () => btn.setStyle({ fill: '#fff' }))
-      .on('pointerdown', callback);
+  createStyledButton(x, y, label, callback) {
+    const button = this.add.text(x, y, label, {
+      fontSize: '36px',
+      fill: '#00ccff',
+      fontFamily: 'Arial',
+      fontStyle: 'bold'
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+    button.on('pointerover', () => button.setColor('#ffffff'));
+    button.on('pointerout', () => button.setColor('#00ccff'));
+    button.on('pointerdown', callback);
   }
 }
+
 window.LevelMenuScene = LevelMenuScene;
