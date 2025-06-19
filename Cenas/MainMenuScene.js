@@ -24,12 +24,15 @@ class MainMenuScene extends Phaser.Scene {
     // Volume e música de fundo
     const volume = this.registry.get('volume') || 50;
     this.sound.setVolume(volume / 100);
-    if (!this.registry.get('backgroundMusic')) {
-      const music = this.sound.add('backgroundMusic', { loop: true, volume: volume / 100 });
-      this.registry.set('backgroundMusic', music);
+
+    // Garante que a música começa mal o menu aparece
+    let backgroundMusic = this.registry.get('backgroundMusic');
+    if (backgroundMusic) {
+      if (backgroundMusic.isPlaying) backgroundMusic.stop();
     }
-    const backgroundMusic = this.registry.get('backgroundMusic');
-    if (!backgroundMusic.isPlaying) backgroundMusic.play();
+    backgroundMusic = this.sound.add('backgroundMusic', { loop: true, volume: volume / 100 });
+    backgroundMusic.play();
+    this.registry.set('backgroundMusic', backgroundMusic);
 
     // Cria botões com texto e efeito hover
     this.createStoneButton(
