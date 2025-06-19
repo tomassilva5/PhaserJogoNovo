@@ -2,7 +2,7 @@ const config = {
   type: Phaser.AUTO,
   width: 2000,
   height: 800,
-  parent: 'game-container', // Certifica-te que tens <div id="game-container"></div> no HTML
+  parent: 'game-container', 
   backgroundColor: '#ffffff',
   physics: {
     default: 'arcade',
@@ -14,10 +14,10 @@ const config = {
   scene: [MainMenuScene, LevelMenuScene, DefinicoesScene, Nivel1, Nivel2]
 };
 
-const game = new Phaser.Game(config);
+const game = new Phaser.Game(config); // Inicialização do jogo
 
-// Responsivo
-window.onload = function () {
+// Ajusta o canvas para ser responsivo ao tamanho da janela
+window.onload = () => {
   resize();
   window.addEventListener('resize', resize, false);
 };
@@ -26,17 +26,14 @@ function resize() {
   const canvas = document.querySelector('canvas');
   if (!canvas) return;
 
-  const wr = window.innerWidth / window.innerHeight;
-  const gr = config.width / config.height;
-
-  if (wr < gr) {
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = (window.innerWidth / gr) + 'px';
-  } else {
-    canvas.style.width = (window.innerHeight * gr) + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-  }
-
+  canvas.style.width = '100vw';
+  canvas.style.height = '100vh';
   canvas.style.display = 'block';
-  canvas.style.margin = '0 auto';
+  canvas.style.margin = '0';
+  canvas.style.padding = '0';
+  canvas.style.position = 'fixed';
+  canvas.style.top = '0';
+  canvas.style.left = '0';
 }
+
+

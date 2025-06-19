@@ -4,85 +4,71 @@ class MainMenuScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/background.png');
+    this.load.image('menuphaser', 'Assets/menuphaser.png');
+    this.load.image('botaomenu', 'Assets/botaomenu.png');
+    this.load.audio('backgroundMusic', 'Assets/PleasantCreek.mp3');
   }
 
   create() {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    this.add.image(0, 0, 'background')
-      .setOrigin(0)
-      .setDisplaySize(width, height);
-
-    // TÍTULO
-    this.add.text(width / 2, 150, 'MENU PRINCIPAL', {
-      fontSize: '72px',
-      fill: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
-      stroke: '#000000',
-      strokeThickness: 6,
-      shadow: {
-        offsetX: 4,
-        offsetY: 4,
-        color: '#000',
-        blur: 4,
-        fill: true
-      }
+    // Fundo e título
+    this.add.image(0, 0, 'menuphaser').setOrigin(0).setDisplaySize(width, height);
+    this.add.text(width / 2, 150, 'Super Panda', {
+      fontSize: '72px', fill: '#ffffff', fontFamily: 'Arial', fontStyle: 'bold',
+      stroke: '#000000', strokeThickness: 6,
+      shadow: { offsetX: 4, offsetY: 4, color: '#000', blur: 4, fill: true }
     }).setOrigin(0.5);
 
-    // BOTÃO JOGAR
-    const jogar = this.add.text(width / 2, 350, '▶ JOGAR', {
-      fontSize: '52px',
-      fill: '#00ff88',
-      fontFamily: 'Arial',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    // Volume e música de fundo
+    const volume = this.registry.get('volume') || 50;
+    this.sound.setVolume(volume / 100);
+    if (!this.registry.get('backgroundMusic')) {
+      const music = this.sound.add('backgroundMusic', { loop: true, volume: volume / 100 });
+      this.registry.set('backgroundMusic', music);
+    }
+    const backgroundMusic = this.registry.get('backgroundMusic');
+    if (!backgroundMusic.isPlaying) backgroundMusic.play();
 
-    jogar.on('pointerover', () => jogar.setColor('#ffffff'));
-    jogar.on('pointerout', () => jogar.setColor('#00ff88'));
-    jogar.on('pointerdown', () => {
-      this.scene.start('LevelMenuScene');
-    });
+    // Cria botões com texto e efeito hover
+    this.createStoneButton(
+      width / 2, 350,
+      'JOGAR',
+      {
+        fontSize: '52px', fill: '#00ff88', fontFamily: 'Arial',
+        fontStyle: 'bold', stroke: '#000000', strokeThickness: 4
+      },
+      () => this.scene.start('LevelMenuScene')
+    );
 
-    // BOTÃO DEFINIÇÕES
-    const definicoes = this.add.text(width / 2, 450, '⚙ DEFINIÇÕES', {
-      fontSize: '40px',
-      fill: '#00ccff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    this.createStoneButton(
+      width / 2, 450,
+      'DEFINIÇÕES',
+      {
+        fontSize: '40px', fill: '#00ccff', fontFamily: 'Arial',
+        fontStyle: 'bold', stroke: '#000000', strokeThickness: 4
+      },
+      () => this.scene.start('DefinicoesScene')
+    );
+  }
 
-    definicoes.on('pointerover', () => definicoes.setColor('#ffffff'));
-    definicoes.on('pointerout', () => definicoes.setColor('#00ccff'));
-    definicoes.on('pointerdown', () => {
-      this.scene.start('DefinicoesScene');
-    });
+  // Cria botão com texto e efeito hover
+  createStoneButton(x, y, label, textStyle, callback) {
+    const button = this.add.sprite(x, y, 'botaomenu').setInteractive({ useHandCursor: true });
+    button.setScale(0.35).setDepth(1);
 
-    // BOTÃO SAIR
-    const sair = this.add.text(width / 2, 550, 'SAIR', {
-      fontSize: '36px',
-      fill: '#ff4d4d',
-      fontFamily: 'Arial',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    const txt = this.add.text(x, y, label, textStyle).setOrigin(0.5).setDepth(2);
 
-    sair.on('pointerover', () => sair.setColor('#ffffff'));
-    sair.on('pointerout', () => sair.setColor('#ff4d4d'));
-    sair.on('pointerdown', () => {
-      // ⚠️ Se estiver em Electron/desktop app, podes usar: window.close()
-      // No navegador, apenas simula ou avisa
-      console.log('Sair do jogo');
+    button.on('pointerover', () => { txt.setColor('#ffffff'); button.setScale(0.36); });
+    button.on('pointerout', () => { txt.setColor(textStyle.fill); button.setScale(0.35); });
+    button.on('pointerdown', callback);
 
-      // Simulação no navegador
-      this.add.text(width / 2, 650, 'Não é possível sair do jogo no navegador.', {
-        fontSize: '24px',
-        fill: '#ffffff',
-        fontFamily: 'Arial'
-      }).setOrigin(0.5);
-    });
-
-    window.MainMenuScene = MainMenuScene;
+    txt.setInteractive({ useHandCursor: true });
+    txt.on('pointerover', () => { txt.setColor('#ffffff'); button.setScale(0.35); });
+    txt.on('pointerout', () => { txt.setColor(textStyle.fill); button.setScale(0.35); });
+    txt.on('pointerdown', callback);
   }
 }
+
+window.MainMenuScene = MainMenuScene;
